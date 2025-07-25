@@ -1,3 +1,3 @@
-# ci: workflow adjustment
+# docs: updated readme
 
-Updated on 7/25/2025, 3:42:50 PM
+Updated on 7/25/2025, 3:44:41 PM
