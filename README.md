@@ -1,3 +1,3 @@
-# docs: updated readme
+# fix: minor typo fix
 
-Updated on 7/27/2025, 8:20:15 PM
+Updated on 7/27/2025, 8:22:15 PM
