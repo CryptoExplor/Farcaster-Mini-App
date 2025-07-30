@@ -1,0 +1,12 @@
+{
+  "name": "farcaster-frame-project",
+  "version": "1.0.0",
+  "description": "A Farcaster Frame with a Vercel serverless backend",
+  "main": "api/frame.js",
+  "scripts": {
+    "start": "node api/frame.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
