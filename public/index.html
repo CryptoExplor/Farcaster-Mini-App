@@ -18,75 +18,57 @@
     <!-- Farcaster Frame Meta Tags -->
     <!-- These tags tell Farcaster clients how to render your app in the feed -->
     <meta property="og:title" content="My Farcaster Mini App">
-    <!-- Initial image displayed in the Farcaster feed - Using a more reliable image host -->
-    <meta property="og:image" content="https://picsum.photos/600/400?random=1">
+    <!-- Initial image displayed in the Farcaster feed - Using a more reliable image host with smaller dimensions for faster loading -->
+    <meta property="og:image" content="https://picsum.photos/300/200?random=1">
     <!-- Specifies the Farcaster Frame version -->
     <meta property="fc:frame" content="vNext">
-    <!-- The image to display within the frame (can be different from og:image) - Using a more reliable image host -->
-    <meta property="fc:frame:image" content="https://picsum.photos/600/400?random=1">
-    <!-- The URL that Farcaster will POST to when a button is clicked.
-         In a real app, this would be a server endpoint that returns a new frame.
-         Here, it's a placeholder URL. -->
-    <meta property="fc:frame:post_url" content="https://farcaster-mini-app-seven.vercel.app/api/frame">
+    <!-- The image to display within the frame (can be different from og:image) - Using a more reliable image host with smaller dimensions for faster loading -->
+    <meta property="fc:frame:image" content="https://picsum.photos/300/200?random=1">
+    <!-- IMPORTANT: This URL will now point to your Vercel serverless function!
+         Replace 'YOUR_VERCEL_APP_DOMAIN' with your actual Vercel domain. -->
+    <meta property="fc:frame:post_url" content="https://YOUR_VERCEL_APP_DOMAIN/api/frame">
     <!-- Define the first button for the frame -->
     <meta property="fc:frame:button:1" content="Click for a new message!">
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
     <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">
         <h1 class="text-3xl font-bold text-gray-800 mb-4">Farcaster Mini App Example</h1>
-        <!-- Image element that will be updated by JavaScript - Using a more reliable image host -->
-        <img id="frameImage" src="https://picsum.photos/600/400?random=1" alt="Farcaster Frame Image" class="w-full rounded-lg mb-6">
-        <!-- Text element that will be updated by JavaScript -->
+        <!-- The image and message below are for direct browser viewing only.
+             Farcaster clients will use the meta tags returned by the backend. -->
+        <img id="frameImage" src="https://picsum.photos/300/200?random=1" alt="Farcaster Frame Image" class="w-full rounded-lg mb-6">
         <p id="messageDisplay" class="text-xl text-gray-700 mb-6">Hello Farcaster! This is a simple mini-app.</p>
-        <!-- Button to trigger the client-side interaction -->
         <button id="actionButton" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">
             Click Me!
         </button>
     </div>
 
     <script>
-        // Ensure the DOM is fully loaded before running the script
+        // This client-side JavaScript is for direct browser viewing only.
+        // Farcaster clients will interact with the backend server defined in fc:frame:post_url.
         document.addEventListener('DOMContentLoaded', () => {
-            // Get references to the HTML elements
             const messageDisplay = document.getElementById('messageDisplay');
             const actionButton = document.getElementById('actionButton');
             const frameImage = document.getElementById('frameImage');
 
-            // State variable to track which message/image to display
             let messageState = 0;
-
-            // Array of messages to cycle through
             const messages = [
                 "Hello Farcaster! This is a simple mini-app.",
                 "Welcome to my interactive Farcaster experience!",
                 "You just clicked the button! Awesome!",
                 "Keep exploring Farcaster frames!"
             ];
-
-            // Array of images to cycle through - Using more reliable image hosts
             const images = [
-                "https://picsum.photos/600/400?random=1",
-                "https://picsum.photos/600/400?random=2",
-                "https://picsum.photos/600/400?random=3",
-                "https://picsum.photos/600/400?random=4"
+                "https://picsum.photos/300/200?random=1",
+                "https://picsum.photos/300/200?random=2",
+                "https://picsum.photos/300/200?random=3",
+                "https://picsum.photos/300/200?random=4"
             ];
 
-            // Add an event listener to the button
             actionButton.addEventListener('click', () => {
-                // Increment the state and loop back to 0 if it exceeds array length
                 messageState = (messageState + 1) % messages.length;
-
-                // Update the displayed message and image
                 messageDisplay.textContent = messages[messageState];
                 frameImage.src = images[messageState];
-
-                // In a real Farcaster Frame, this client-side click would typically
-                // trigger a POST request to the `fc:frame:post_url` (defined in meta tags).
-                // A server would then respond with new Farcaster meta tags,
-                // causing the frame in the Farcaster client to update.
-                // This client-side logic is purely for demonstrating interactivity
-                // within the HTML page itself.
-                console.log('Button clicked! Message and image changed.');
+                console.log('Button clicked in browser! Message and image changed.');
             });
         });
     </script>
