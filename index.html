@@ -4,91 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farcaster Mini App</title>
-    <!-- Tailwind CSS for easy styling -->
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Inter Font for modern typography -->
+    
+    <!-- Inter Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* Apply Inter font globally */
         body {
             font-family: 'Inter', sans-serif;
         }
     </style>
-
-    <!-- Farcaster Frame Meta Tags -->
-    <!-- These tags tell Farcaster clients how to render your app in the feed -->
+    
+    <!-- Required Farcaster Frame Meta Tags -->
     <meta property="og:title" content="My Farcaster Mini App">
-    <!-- Initial image displayed in the Farcaster feed - Using a more reliable image host -->
-    <meta property="og:image" content="https://picsum.photos/600/400?random=1">
-    <!-- Specifies the Farcaster Frame version -->
+    <meta property="og:description" content="An interactive Farcaster Frame experience">
+    <meta property="og:image" content="https://via.placeholder.com/600x315/4F46E5/FFFFFF?text=Farcaster+Frame">
+    
+    <!-- Farcaster Frame Configuration -->
     <meta property="fc:frame" content="vNext">
-    <!-- The image to display within the frame (can be different from og:image) - Using a more reliable image host -->
-    <meta property="fc:frame:image" content="https://picsum.photos/600/400?random=1">
-    <!-- The URL that Farcaster will POST to when a button is clicked.
-         In a real app, this would be a server endpoint that returns a new frame.
-         Here, it's a placeholder URL. -->
-    <meta property="fc:frame:post_url" content="https://example.com/api/frame-interaction">
-    <!-- Define the first button for the frame -->
-    <meta property="fc:frame:button:1" content="Click for a new message!">
+    <meta property="fc:frame:image" content="https://via.placeholder.com/600x315/4F46E5/FFFFFF?text=Click+the+Button!">
+    <meta property="fc:frame:image:aspect_ratio" content="1.91:1">
+    <meta property="fc:frame:post_url" content="https://your-domain.com/api/frame">
+    
+    <!-- Frame Buttons -->
+    <meta property="fc:frame:button:1" content="Click Me!">
+    <meta property="fc:frame:button:1:action" content="post">
+    
+    <!-- Optional: Add more buttons -->
+    <meta property="fc:frame:button:2" content="Reset">
+    <meta property="fc:frame:button:2:action" content="post">
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
-    <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">
-        <h1 class="text-3xl font-bold text-gray-800 mb-4">Farcaster Mini App Example</h1>
-        <!-- Image element that will be updated by JavaScript - Using a more reliable image host -->
-        <img id="frameImage" src="https://picsum.photos/600/400?random=1" alt="Farcaster Frame Image" class="w-full rounded-lg mb-6">
-        <!-- Text element that will be updated by JavaScript -->
-        <p id="messageDisplay" class="text-xl text-gray-700 mb-6">Hello Farcaster! This is a simple mini-app.</p>
-        <!-- Button to trigger the client-side interaction -->
-        <button id="actionButton" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">
-            Click Me!
-        </button>
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-2xl w-full">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">Farcaster Frame Preview</h1>
+            <p class="text-gray-600 mb-6">This is how your frame will appear in Farcaster clients</p>
+        </div>
+        
+        <!-- Frame Preview -->
+        <div class="border-2 border-gray-200 rounded-lg p-4 bg-gray-50">
+            <div class="aspect-[1.91/1] bg-indigo-600 rounded-lg flex items-center justify-center mb-4">
+                <div class="text-center text-white">
+                    <h2 class="text-2xl font-bold mb-2">Farcaster Frame</h2>
+                    <p class="text-lg">Click the Button!</p>
+                </div>
+            </div>
+            
+            <!-- Frame Buttons Preview -->
+            <div class="flex gap-2">
+                <button class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition duration-200">
+                    Click Me!
+                </button>
+                <button class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded transition duration-200">
+                    Reset
+                </button>
+            </div>
+        </div>
+        
+        <!-- Instructions -->
+        <div class="mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <h3 class="font-semibold text-yellow-800 mb-2">⚠️ Important Notes:</h3>
+            <ul class="text-sm text-yellow-700 space-y-1">
+                <li>• Replace the post_url with your actual server endpoint</li>
+                <li>• The server must handle POST requests and return new frame data</li>
+                <li>• JavaScript interactions only work in direct HTML view, not in Farcaster</li>
+                <li>• Use reliable image hosting (not random image generators)</li>
+                <li>• Test your frame using Farcaster's frame validator</li>
+            </ul>
+        </div>
+        
+        <!-- Development Info -->
+        <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <h3 class="font-semibold text-blue-800 mb-2">🔧 Next Steps:</h3>
+            <ol class="text-sm text-blue-700 space-y-1 list-decimal list-inside">
+                <li>Create a server endpoint to handle frame interactions</li>
+                <li>Generate dynamic images based on user interactions</li>
+                <li>Update meta tags dynamically on the server</li>
+                <li>Test with Farcaster's frame debugger</li>
+                <li>Deploy to a public URL for Farcaster to access</li>
+            </ol>
+        </div>
     </div>
-
-    <script>
-        // Ensure the DOM is fully loaded before running the script
-        document.addEventListener('DOMContentLoaded', () => {
-            // Get references to the HTML elements
-            const messageDisplay = document.getElementById('messageDisplay');
-            const actionButton = document.getElementById('actionButton');
-            const frameImage = document.getElementById('frameImage');
-
-            // State variable to track which message/image to display
-            let messageState = 0;
-
-            // Array of messages to cycle through
-            const messages = [
-                "Hello Farcaster! This is a simple mini-app.",
-                "Welcome to my interactive Farcaster experience!",
-                "You just clicked the button! Awesome!",
-                "Keep exploring Farcaster frames!"
-            ];
-
-            // Array of images to cycle through - Using more reliable image hosts
-            const images = [
-                "https://picsum.photos/600/400?random=1",
-                "https://picsum.photos/600/400?random=2",
-                "https://picsum.photos/600/400?random=3",
-                "https://picsum.photos/600/400?random=4"
-            ];
-
-            // Add an event listener to the button
-            actionButton.addEventListener('click', () => {
-                // Increment the state and loop back to 0 if it exceeds array length
-                messageState = (messageState + 1) % messages.length;
-
-                // Update the displayed message and image
-                messageDisplay.textContent = messages[messageState];
-                frameImage.src = images[messageState];
-
-                // In a real Farcaster Frame, this client-side click would typically
-                // trigger a POST request to the `fc:frame:post_url` (defined in meta tags).
-                // A server would then respond with new Farcaster meta tags,
-                // causing the frame in the Farcaster client to update.
-                // This client-side logic is purely for demonstrating interactivity
-                // within the HTML page itself.
-                console.log('Button clicked! Message and image changed.');
-            });
-        });
-    </script>
 </body>
 </html>
