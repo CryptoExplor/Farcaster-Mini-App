@@ -1,0 +1,20 @@
+{
+  "frame": {
+    "name": "FarCast NFT",
+    "version": "1",
+    "iconUrl": "https://farcaster-mini-app-seven.vercel.app/icon.png",
+    "homeUrl": "https://farcaster-mini-app-seven.vercel.app",
+    "imageUrl": "https://farcaster-mini-app-seven.vercel.app/image.png",
+    "splashImageUrl": "https://farcaster-mini-app-seven.vercel.app/splash.png",
+    "splashBackgroundColor": "#6200EA",
+    "webhookUrl": "https://farcaster-mini-app-seven.vercel.app/api/webhook",
+    "subtitle": "NFT mint",
+    "description": "NFT mint",
+    "primaryCategory": "utility"
+  },
+  "accountAssociation": {
+    "header": "eyJmaWQiOjYxMjA2NiwidHlwZSI6ImF1dGgiLCJrZXkiOiIweDE4MjhjNEJmNzhEQWI2NkI0QjdkZUJmYUEzOEYwQWQxMjVFYzhkMTUifQ",
+    "payload": "eyJkb21haW4iOiJmYXJjYXN0ZXItbWluaS1hcHAtc2V2ZW4udmVyY2VsLmFwcCJ9",
+    "signature": "elit6J1g0w/dSwjNvStMK0DhtnqIp0cGEFiAAcoZ3k5UjXLVVHwSXdtGX/6yl5ZqPIFm6fFZXcRwOu8tzijxDBs="
+  }
+}
