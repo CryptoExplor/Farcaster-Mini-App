@@ -1,16 +1,23 @@
 {
-  "frame": {
+  "miniapp": {
+    "version": "vNext",
     "name": "FarCast NFT",
-    "version": "1",
-    "iconUrl": "https://farcaster-mini-app-seven.vercel.app/icon.png",
+    "icon": "https://farcaster-mini-app-seven.vercel.app/icon.png",
     "homeUrl": "https://farcaster-mini-app-seven.vercel.app",
-    "imageUrl": "https://farcaster-mini-app-seven.vercel.app/image.png",
+    "description": "Mint exclusive NFTs directly from Farcaster",
+    "webhookUrl": "https://farcaster-mini-app-seven.vercel.app/api/webhook",
     "splashImageUrl": "https://farcaster-mini-app-seven.vercel.app/splash.png",
     "splashBackgroundColor": "#6200EA",
-    "webhookUrl": "https://farcaster-mini-app-seven.vercel.app/api/webhook",
-    "subtitle": "NFT mint",
-    "description": "NFT mint",
-    "primaryCategory": "utility"
+    "developer": {
+      "name": "FarCast NFT Team",
+      "url": "https://farcaster-mini-app-seven.vercel.app",
+      "iconUrl": "https://farcaster-mini-app-seven.vercel.app/icon.png"
+    },
+    "permissions": [
+      "identity",
+      "wallet"
+    ],
+    "categories": ["utility", "nft"]
   },
   "accountAssociation": {
     "header": "eyJmaWQiOjYxMjA2NiwidHlwZSI6ImF1dGgiLCJrZXkiOiIweDE4MjhjNEJmNzhEQWI2NkI0QjdkZUJmYUEzOEYwQWQxMjVFYzhkMTUifQ",
