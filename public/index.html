@@ -3,32 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frame-First NFT Mint</title>
+    <title>FarCast NFT - Mint Exclusive NFTs</title>
     
-    <!-- Enhanced Farcaster Frame Meta Tags -->
+    <!-- Farcaster Mini App Embed -->
+    <meta name="fc:miniapp" content='{"version":"vNext","imageUrl":"https://farcaster-mini-app-seven.vercel.app/image.png","aspectRatio":"1:1","button":{"title":"Mint NFT","action":{"type":"launch"}}}' />
+    
+    <!-- Backward compatibility Frame -->
     <meta property="fc:frame" content="vNext" />
-    <meta property="fc:frame:image" content="https://via.placeholder.com/800x600/6366f1/ffffff?text=🎨+Exclusive+NFT+Collection+✨" />
+    <meta property="fc:frame:image" content="https://farcaster-mini-app-seven.vercel.app/image.png" />
     <meta property="fc:frame:image:aspect_ratio" content="1:1" />
-    <meta property="fc:frame:button:1" content="🔗 Connect" />
-    <meta property="fc:frame:button:1:action" content="post" />
-    <meta property="fc:frame:button:2" content="🎨 Mint" />
-    <meta property="fc:frame:button:2:action" content="post" />
-    <meta property="fc:frame:button:3" content="🔍 Gallery" />
-    <meta property="fc:frame:button:3:action" content="post" />
-    <meta property="fc:frame:button:4" content="🌐 Open App" />
-    <meta property="fc:frame:button:4:action" content="link" />
-    <meta property="fc:frame:button:4:target" content="https://your-domain.com" />
-    <meta property="fc:frame:post_url" content="https://your-domain.com/api/frame" />
-    
-    <!-- Action Integration -->
-    <meta property="fc:frame:action:1" content="https://your-domain.com/actions/mint" />
-    <meta property="fc:frame:action:1:name" content="Mint NFT" />
-    <meta property="fc:frame:action:1:icon" content="zap" />
+    <meta property="fc:frame:button:1" content="🎨 Mint NFT" />
+    <meta property="fc:frame:button:1:action" content="link" />
+    <meta property="fc:frame:button:1:target" content="https://farcaster-mini-app-seven.vercel.app" />
+    <meta property="fc:frame:button:2" content="🔍 Gallery" />
+    <meta property="fc:frame:button:2:action" content="link" />
+    <meta property="fc:frame:button:2:target" content="https://farcaster-mini-app-seven.vercel.app/gallery" />
     
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Exclusive NFT Collection - Frame-First Mint" />
-    <meta property="og:description" content="Mint exclusive NFTs with Frame-optimized experience" />
-    <meta property="og:image" content="https://via.placeholder.com/800x600/6366f1/ffffff?text=🎨+Exclusive+NFT+Collection+✨" />
+    <meta property="og:title" content="FarCast NFT - Mint Exclusive NFTs" />
+    <meta property="og:description" content="Mint exclusive NFTs directly from Farcaster with one click" />
+    <meta property="og:image" content="https://farcaster-mini-app-seven.vercel.app/image.png" />
+    <meta property="og:url" content="https://farcaster-mini-app-seven.vercel.app" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="FarCast NFT - Mint Exclusive NFTs" />
+    <meta name="twitter:description" content="Mint exclusive NFTs directly from Farcaster" />
+    <meta name="twitter:image" content="https://farcaster-mini-app-seven.vercel.app/image.png" />
     
     <style>
         * {
@@ -39,61 +40,79 @@
         
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #6200EA 0%, #3700B3 50%, #6200EA 100%);
             min-height: 100vh;
             color: white;
-        }
-        
-        .frame-indicator {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            backdrop-filter: blur(10px);
-        }
-        
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
         }
         
-        .frame-optimized {
+        .miniapp-container {
+            max-width: 500px;
+            width: 90%;
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
             padding: 40px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             text-align: center;
-            width: 100%;
-            max-width: 500px;
+            position: relative;
+            overflow: hidden;
         }
         
-        .logo {
-            font-size: 2.5rem;
-            font-weight: bold;
+        .miniapp-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4);
+            border-radius: 24px 24px 0 0;
+        }
+        
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            border-radius: 20px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .app-title {
+            font-size: 2rem;
+            font-weight: 700;
             margin-bottom: 10px;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         
-        .frame-preview {
-            width: 300px;
+        .app-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        
+        .nft-preview {
+            width: 200px;
             height: 200px;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
-            border-radius: 15px;
-            margin: 20px auto;
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4);
+            border-radius: 20px;
+            margin: 0 auto 30px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -101,374 +120,386 @@
             font-weight: bold;
             position: relative;
             overflow: hidden;
+            animation: pulse 2s infinite;
         }
         
-        .frame-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 20px 0;
+        .nft-preview::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
         }
         
-        .frame-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-            padding: 12px;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+            100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
         }
         
-        .frame-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        .frame-btn.primary {
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            border: none;
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(255, 107, 107, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
         }
         
         .mint-stats {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
-            margin: 20px 0;
+            gap: 20px;
+            margin: 30px 0;
         }
         
-        .stat-card {
+        .stat-item {
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
+            border-radius: 15px;
+            padding: 20px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .stat-number {
             font-size: 1.5rem;
-            font-weight: bold;
-            color: #4ecdc4;
+            font-weight: 700;
+            color: #4ECDC4;
+            margin-bottom: 5px;
         }
         
         .stat-label {
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             opacity: 0.8;
-            margin-top: 5px;
         }
         
-        .frame-actions {
-            background: rgba(255, 255, 255, 0.05);
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
+            padding: 15px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.9rem;
         }
         
-        .action-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
         
-        .action-item:last-child {
-            border-bottom: none;
+        .action-btn.primary {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            border: none;
         }
         
-        .action-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-        }
-        
-        .full-app-btn {
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        .launch-btn {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
             border: none;
             border-radius: 50px;
-            padding: 15px 30px;
+            padding: 18px 40px;
             font-size: 1.1rem;
-            font-weight: bold;
+            font-weight: 700;
             color: white;
             cursor: pointer;
             margin: 20px 0;
             transition: all 0.3s ease;
             width: 100%;
+            position: relative;
+            overflow: hidden;
         }
         
-        .full-app-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        .launch-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 107, 107, 0.4);
         }
         
-        .frame-info {
-            font-size: 0.9rem;
-            opacity: 0.8;
+        .launch-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .launch-btn:hover::before {
+            left: 100%;
+        }
+        
+        .miniapp-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 0.8rem;
             margin-top: 20px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            background: #4ECDC4;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: blink 2s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
         }
         
         @media (max-width: 600px) {
-            .frame-optimized {
-                padding: 20px;
-                margin: 10px;
+            .miniapp-container {
+                padding: 30px 20px;
+                margin: 20px;
             }
             
-            .frame-preview {
-                width: 250px;
-                height: 160px;
+            .nft-preview {
+                width: 150px;
+                height: 150px;
             }
             
             .mint-stats {
                 grid-template-columns: 1fr;
-                gap: 10px;
+                gap: 15px;
             }
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.7; }
-            100% { opacity: 1; }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="frame-indicator">
-        🖼️ Frame-Optimized
-    </div>
-    
-    <div class="container">
-        <div class="frame-optimized">
-            <div class="logo">🎨 FrameNFT</div>
-            <p style="margin-bottom: 20px; opacity: 0.9;">Frame-First NFT Experience</p>
-            
-            <div class="frame-preview pulse">
-                <div style="position: absolute; top: 10px; left: 10px; font-size: 0.8rem; background: rgba(0,0,0,0.3); padding: 5px 8px; border-radius: 5px;">
-                    #001
-                </div>
-                ✨ Your NFT ✨
+    <div class="miniapp-container">
+        <div class="app-icon">🎨</div>
+        <h1 class="app-title">FarCast NFT</h1>
+        <p class="app-subtitle">Mint exclusive NFTs directly from Farcaster</p>
+        
+        <div class="nft-preview">
+            ✨ Your NFT ✨
+        </div>
+        
+        <div class="mint-stats">
+            <div class="stat-item">
+                <div class="stat-number">2,847</div>
+                <div class="stat-label">Minted</div>
             </div>
-            
-            <div class="mint-stats">
-                <div class="stat-card">
-                    <div class="stat-number">1,247</div>
-                    <div class="stat-label">Minted</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">0.01</div>
-                    <div class="stat-label">ETH</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">8,753</div>
-                    <div class="stat-label">Left</div>
-                </div>
+            <div class="stat-item">
+                <div class="stat-number">0.01</div>
+                <div class="stat-label">ETH</div>
             </div>
-            
-            <div class="frame-buttons">
-                <button class="frame-btn" onclick="handleFrameAction('connect')">
-                    🔗 Connect
-                </button>
-                <button class="frame-btn primary" onclick="handleFrameAction('mint')">
-                    🎨 Mint
-                </button>
-                <button class="frame-btn" onclick="handleFrameAction('gallery')">
-                    🔍 Gallery
-                </button>
-                <button class="frame-btn" onclick="handleFrameAction('share')">
-                    📤 Share
-                </button>
+            <div class="stat-item">
+                <div class="stat-number">7,153</div>
+                <div class="stat-label">Remaining</div>
             </div>
-            
-            <div class="frame-actions">
-                <h3 style="margin-bottom: 15px;">Quick Actions</h3>
-                
-                <div class="action-item">
-                    <div style="display: flex; align-items: center;">
-                        <div class="action-icon">⚡</div>
-                        <div>
-                            <div style="font-weight: bold;">Quick Mint</div>
-                            <div style="font-size: 0.8rem; opacity: 0.7;">Mint with one click</div>
-                        </div>
-                    </div>
-                    <button class="frame-btn" style="padding: 8px 12px; margin: 0;">Go</button>
-                </div>
-                
-                <div class="action-item">
-                    <div style="display: flex; align-items: center;">
-                        <div class="action-icon">🎯</div>
-                        <div>
-                            <div style="font-weight: bold;">Random Mint</div>
-                            <div style="font-size: 0.8rem; opacity: 0.7;">Get a surprise NFT</div>
-                        </div>
-                    </div>
-                    <button class="frame-btn" style="padding: 8px 12px; margin: 0;">Try</button>
-                </div>
-                
-                <div class="action-item">
-                    <div style="display: flex; align-items: center;">
-                        <div class="action-icon">💎</div>
-                        <div>
-                            <div style="font-weight: bold;">Rare Hunt</div>
-                            <div style="font-size: 0.8rem; opacity: 0.7;">Find rare traits</div>
-                        </div>
-                    </div>
-                    <button class="frame-btn" style="padding: 8px 12px; margin: 0;">Hunt</button>
-                </div>
-            </div>
-            
-            <button class="full-app-btn" onclick="openFullApp()">
-                🌐 Open Full Experience
+        </div>
+        
+        <div class="action-buttons">
+            <button class="action-btn" onclick="handleAction('connect')">
+                🔗 Connect Wallet
             </button>
-            
-            <div class="frame-info">
-                <strong>📡 Frame Features:</strong><br>
-                • Instant minting without leaving Farcaster<br>
-                • Real-time stats and updates<br>
-                • Share directly to your feed<br>
-                • Full app fallback for complex interactions
-            </div>
+            <button class="action-btn primary" onclick="handleAction('mint')">
+                ⚡ Quick Mint
+            </button>
+            <button class="action-btn" onclick="handleAction('gallery')">
+                🖼️ Gallery
+            </button>
+            <button class="action-btn" onclick="handleAction('share')">
+                📤 Share
+            </button>
+        </div>
+        
+        <button class="launch-btn" onclick="launchMiniApp()">
+            🚀 Launch Full App
+        </button>
+        
+        <div class="miniapp-badge">
+            <div class="status-indicator"></div>
+            Farcaster Mini App
         </div>
     </div>
 
+    <!-- Farcaster SDK -->
     <script>
-        // Check if running in Farcaster Frame
-        function isInFrame() {
+        // Check if running in Farcaster
+        function isInFarcaster() {
             return window.parent !== window || 
                    navigator.userAgent.includes('farcaster') ||
                    document.referrer.includes('farcaster') ||
                    document.referrer.includes('warpcast');
         }
         
-        // Handle frame actions (optimized for frame environment)
-        function handleFrameAction(action) {
-            console.log('Frame action:', action);
+        // Initialize Farcaster SDK
+        let farcasterSDK = null;
+        
+        window.addEventListener('load', async () => {
+            if (window.frameSDK) {
+                try {
+                    farcasterSDK = window.frameSDK;
+                    await farcasterSDK.ready();
+                    console.log('Farcaster Mini App ready!');
+                    
+                    // Get user context
+                    const context = await farcasterSDK.context();
+                    console.log('User context:', context);
+                    
+                    // Update UI based on user
+                    if (context.user) {
+                        updateUserInterface(context.user);
+                    }
+                } catch (error) {
+                    console.error('SDK initialization failed:', error);
+                }
+            }
             
-            if (isInFrame()) {
-                // Send frame action to parent
-                window.parent.postMessage({
-                    type: 'fc:frame:button:clicked',
-                    buttonIndex: getButtonIndex(action),
-                    action: action
-                }, '*');
+            // Update status indicator
+            const indicator = document.querySelector('.status-indicator');
+            if (isInFarcaster()) {
+                indicator.style.background = '#4ECDC4';
+                document.querySelector('.miniapp-badge').innerHTML = 
+                    '<div class="status-indicator"></div>Running in Farcaster';
             } else {
-                // Fallback for direct access
-                handleDirectAction(action);
+                indicator.style.background = '#FF6B6B';
+                document.querySelector('.miniapp-badge').innerHTML = 
+                    '<div class="status-indicator"></div>Open in Farcaster for full experience';
             }
+        });
+        
+        function updateUserInterface(user) {
+            // Customize UI based on user data
+            console.log('Customizing for user:', user.displayName);
+        }
+        
+        async function handleAction(action) {
+            console.log('Action:', action);
             
-            // Visual feedback
-            showActionFeedback(action);
-        }
-        
-        function getButtonIndex(action) {
-            const actions = {
-                'connect': 1,
-                'mint': 2,
-                'gallery': 3,
-                'share': 4
-            };
-            return actions[action] || 1;
-        }
-        
-        function handleDirectAction(action) {
-            switch(action) {
-                case 'connect':
-                    alert('Connect wallet functionality - integrate with Web3 wallet');
-                    break;
-                case 'mint':
-                    alert('Mint NFT - would trigger minting process');
-                    break;
-                case 'gallery':
-                    alert('Gallery view - show NFT collection');
-                    break;
-                case 'share':
-                    shareToFarcaster();
-                    break;
-            }
-        }
-        
-        function showActionFeedback(action) {
-            const preview = document.querySelector('.frame-preview');
+            const preview = document.querySelector('.nft-preview');
             const originalContent = preview.innerHTML;
             
-            const feedbackMessages = {
+            const actionMessages = {
                 'connect': '🔗 Connecting...',
                 'mint': '🎨 Minting...',
-                'gallery': '🔍 Loading...',
+                'gallery': '🖼️ Loading...',
                 'share': '📤 Sharing...'
             };
             
-            preview.innerHTML = feedbackMessages[action] || '⚡ Processing...';
-            preview.style.background = 'linear-gradient(45deg, #4ecdc4, #45b7d1)';
+            // Visual feedback
+            preview.innerHTML = actionMessages[action] || '⚡ Processing...';
+            preview.style.background = 'linear-gradient(45deg, #4ECDC4, #45B7D1)';
             
+            try {
+                if (farcasterSDK) {
+                    switch (action) {
+                        case 'connect':
+                            const wallet = await farcasterSDK.wallet();
+                            console.log('Wallet connected:', wallet);
+                            break;
+                        case 'mint':
+                            // Implement minting logic
+                            await simulateMint();
+                            break;
+                        case 'gallery':
+                            // Navigate to gallery
+                            window.open('https://farcaster-mini-app-seven.vercel.app/gallery', '_blank');
+                            break;
+                        case 'share':
+                            await shareToFarcaster();
+                            break;
+                    }
+                } else {
+                    // Fallback for non-Farcaster environment
+                    alert(`${action} action - Please open in Farcaster for full functionality`);
+                }
+            } catch (error) {
+                console.error('Action failed:', error);
+                preview.innerHTML = '❌ Action failed';
+                preview.style.background = 'linear-gradient(45deg, #FF6B6B, #FF8E53)';
+            }
+            
+            // Restore original state
             setTimeout(() => {
                 preview.innerHTML = originalContent;
-                preview.style.background = 'linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4)';
-            }, 1500);
+                preview.style.background = 'linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4)';
+            }, 2000);
         }
         
-        function openFullApp() {
-            if (isInFrame()) {
-                window.parent.postMessage({
-                    type: 'fc:frame:redirect',
-                    url: window.location.href
-                }, '*');
-            } else {
-                // Already in full app
-                alert('You are already in the full app experience!');
-            }
+        async function simulateMint() {
+            // Simulate minting process
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    const preview = document.querySelector('.nft-preview');
+                    preview.innerHTML = '✅ Minted!';
+                    preview.style.background = 'linear-gradient(45deg, #4CAF50, #81C784)';
+                    
+                    // Update stats
+                    const mintedStat = document.querySelector('.stat-number');
+                    mintedStat.textContent = (parseInt(mintedStat.textContent.replace(',', '')) + 1).toLocaleString();
+                    
+                    resolve();
+                }, 1500);
+            });
         }
         
-        function shareToFarcaster() {
-            const text = "Just discovered this Frame-optimized NFT collection! 🎨✨\n\nMint directly from your Farcaster feed 🔥\n\n#FrameNFT #Farcaster";
-            const shareUrl = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}`;
+        async function shareToFarcaster() {
+            const text = "Just minted an exclusive NFT from FarCast! 🎨✨\n\nMint yours directly from Farcaster 🚀\n\n#NFT #Farcaster #Web3";
             
-            if (isInFrame()) {
-                window.parent.postMessage({
-                    type: 'fc:frame:share',
-                    text: text
-                }, '*');
+            if (farcasterSDK) {
+                try {
+                    await farcasterSDK.cast.publish({
+                        text: text,
+                        embeds: [{ url: window.location.href }]
+                    });
+                } catch (error) {
+                    console.error('Share failed:', error);
+                }
             } else {
+                const shareUrl = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}`;
                 window.open(shareUrl, '_blank');
             }
         }
         
-        // Listen for frame messages
-        window.addEventListener('message', (event) => {
-            if (event.data.type === 'fc:frame:ready') {
-                console.log('Frame ready');
-            }
-        });
-        
-        // Initialize
-        window.addEventListener('load', () => {
-            if (isInFrame()) {
-                document.querySelector('.frame-indicator').textContent = '🖼️ Frame Mode';
-                // Send ready signal
-                window.parent.postMessage({
-                    type: 'fc:frame:ready'
-                }, '*');
+        function launchMiniApp() {
+            if (isInFarcaster() && farcasterSDK) {
+                // Already in mini app, show full interface
+                alert('You are in the Mini App! Full functionality available.');
             } else {
-                document.querySelector('.frame-indicator').textContent = '🌐 Full App';
+                // Redirect to Farcaster
+                const farcasterUrl = `https://warpcast.com/~/frame/${encodeURIComponent(window.location.href)}`;
+                window.open(farcasterUrl, '_blank');
             }
-        });
+        }
         
-        // Update stats periodically
+        // Auto-update stats
         setInterval(() => {
             const stats = document.querySelectorAll('.stat-number');
-            stats[0].textContent = Math.floor(Math.random() * 100) + 1200; // Minted
-            stats[2].textContent = Math.floor(Math.random() * 1000) + 8000; // Left
-        }, 30000);
+            const currentMinted = parseInt(stats[0].textContent.replace(',', ''));
+            const remaining = parseInt(stats[2].textContent.replace(',', ''));
+            
+            if (Math.random() > 0.7 && remaining > 0) {
+                stats[0].textContent = (currentMinted + 1).toLocaleString();
+                stats[2].textContent = (remaining - 1).toLocaleString();
+            }
+        }, 5000);
     </script>
+    
+    <!-- Load Farcaster SDK -->
+    <script src="https://sdk.farcaster.xyz/v1/miniapp.js" async></script>
 </body>
 </html>
