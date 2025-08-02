@@ -6,30 +6,29 @@
     <title>FarCast NFT - Mint Exclusive NFTs</title>
     
     <!-- Farcaster Mini App Embed -->
-    <meta name="fc:miniapp" content='{"version":"vNext","imageUrl":"https://farcaster-mini-app-seven.vercel.app/image.png","aspectRatio":"1:1","button":{"title":"Mint NFT","action":{"type":"launch"}}}' />
-    
+    <meta name="fc:miniapp" content='{"version":"vNext","imageUrl":"/image.png","aspectRatio":"1:1","button":{"title":"Mint NFT","action":{"type":"launch"}}}' />
+
     <!-- Backward compatibility Frame -->
     <meta property="fc:frame" content="vNext" />
-    <meta property="fc:frame:image" content="https://farcaster-mini-app-seven.vercel.app/image.png" />
+    <meta property="fc:frame:image" content="/image.png" />
     <meta property="fc:frame:image:aspect_ratio" content="1:1" />
     <meta property="fc:frame:button:1" content="🎨 Mint NFT" />
     <meta property="fc:frame:button:1:action" content="link" />
-    <meta property="fc:frame:button:1:target" content="https://farcaster-mini-app-seven.vercel.app" />
+    <meta property="fc:frame:button:1:target" content="/" />
     <meta property="fc:frame:button:2" content="🔍 Gallery" />
     <meta property="fc:frame:button:2:action" content="link" />
-    <meta property="fc:frame:button:2:target" content="https://farcaster-mini-app-seven.vercel.app/gallery" />
-    
+    <meta property="fc:frame:button:2:target" content="/gallery" />
+
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="FarCast NFT - Mint Exclusive NFTs" />
     <meta property="og:description" content="Mint exclusive NFTs directly from Farcaster with one click" />
-    <meta property="og:image" content="https://farcaster-mini-app-seven.vercel.app/image.png" />
-    <meta property="og:url" content="https://farcaster-mini-app-seven.vercel.app" />
-    
+    <meta property="og:image" content="/image.png" />
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="FarCast NFT - Mint Exclusive NFTs" />
     <meta name="twitter:description" content="Mint exclusive NFTs directly from Farcaster" />
-    <meta name="twitter:image" content="https://farcaster-mini-app-seven.vercel.app/image.png" />
+    <meta name="twitter:image" content="/image.png" />
     
     <style>
         * {
@@ -341,235 +340,182 @@
         // Check if running in Farcaster
         function isInFarcaster() {
             return window.parent !== window || 
-                   navigator.userAgent.includes('farcaster') ||
-                   document.referrer.includes('farcaster') ||
-                   document.referrer.includes('warpcast');
-        }
-        
-        // Initialize Farcaster SDK
-        let farcasterSDK = null;
-        let isSDKReady = false;
-        
-        // Wait for SDK to load, then initialize
-        function initializeSDK() {
-            if (window.sdk && window.sdk.actions) {
-                farcasterSDK = window.sdk;
-                console.log('SDK found, calling ready...');
-                
-                // Call the required ready() function
-                farcasterSDK.actions.ready()
-                    .then(() => {
-                        isSDKReady = true;
-                        console.log('Farcaster Mini App ready!');
-                        
-                        // Update UI to show ready state
-                        updateReadyState(true);
-                        
-                        // Get user context if available
+               navigator.userAgent.includes('farcaster') ||
+               document.referrer.includes('farcaster') ||
+               document.referrer.includes('warpcast');
+    }
+    
+    // Initialize Farcaster SDK
+    let farcasterSDK = null;
+    let isSDKReady = false;
+    
+    // Wait for SDK to load, then initialize
+    function initializeSDK() {
+        // Check for the new SDK first
+        if (window.sdk && window.sdk.actions) {
+            farcasterSDK = window.sdk;
+            console.log('SDK found, calling ready...');
+            
+            farcasterSDK.actions.ready()
+                .then(() => {
+                    isSDKReady = true;
+                    console.log('Farcaster Mini App ready!');
+                    updateReadyState(true);
+                    
+                    if (farcasterSDK.context) {
                         return farcasterSDK.context;
-                    })
-                    .then((context) => {
-                        if (context && context.user) {
-                            console.log('User context:', context);
-                            updateUserInterface(context.user);
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('SDK ready failed:', error);
-                        updateReadyState(false);
-                    });
-            } else if (window.frameSDK) {
-                // Fallback to frameSDK
-                farcasterSDK = window.frameSDK;
-                farcasterSDK.ready()
-                    .then(() => {
-                        isSDKReady = true;
-                        console.log('Frame SDK ready!');
-                        updateReadyState(true);
-                        return farcasterSDK.context();
-                    })
-                    .then((context) => {
-                        if (context && context.user) {
-                            updateUserInterface(context.user);
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Frame SDK ready failed:', error);
-                        updateReadyState(false);
-                    });
-            } else {
-                console.log('SDK not found, retrying...');
-                setTimeout(initializeSDK, 100);
-            }
-        }
-        
-        function updateReadyState(ready) {
-            const indicator = document.querySelector('.status-indicator');
-            const badge = document.querySelector('.miniapp-badge');
-            
-            if (ready) {
-                indicator.style.background = '#4ECDC4';
-                badge.innerHTML = '<div class="status-indicator"></div>Ready in Farcaster';
-            } else {
-                indicator.style.background = '#FF6B6B';
-                badge.innerHTML = '<div class="status-indicator"></div>Initializing...';
-            }
-        }
-        
-        // Start initialization when page loads
-        window.addEventListener('load', () => {
-            console.log('Page loaded, initializing SDK...');
-            initializeSDK();
-        });
-        
-        // Also try when DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeSDK);
-        } else {
-            initializeSDK();
-        }
-        
-        function updateUserInterface(user) {
-            // Customize UI based on user data
-            console.log('Customizing for user:', user.displayName);
-        }
-        
-        async function handleAction(action) {
-            if (!isSDKReady) {
-                console.log('SDK not ready yet');
-                return;
-            }
-            
-            console.log('Action:', action);
-            
-            const preview = document.querySelector('.nft-preview');
-            const originalContent = preview.innerHTML;
-            
-            const actionMessages = {
-                'connect': '🔗 Connecting...',
-                'mint': '🎨 Minting...',
-                'gallery': '🖼️ Loading...',
-                'share': '📤 Sharing...'
-            };
-            
-            // Visual feedback
-            preview.innerHTML = actionMessages[action] || '⚡ Processing...';
-            preview.style.background = 'linear-gradient(45deg, #4ECDC4, #45B7D1)';
-            
-            try {
-                if (farcasterSDK) {
-                    switch (action) {
-                        case 'connect':
-                            if (farcasterSDK.wallet) {
-                                const wallet = await farcasterSDK.wallet();
-                                console.log('Wallet connected:', wallet);
-                            } else {
-                                console.log('Wallet API not available');
-                            }
-                            break;
-                        case 'mint':
-                            // Implement minting logic
-                            await simulateMint();
-                            break;
-                        case 'gallery':
-                            // Navigate to gallery
-                            if (farcasterSDK.actions && farcasterSDK.actions.openUrl) {
-                                await farcasterSDK.actions.openUrl('https://farcaster-mini-app-seven.vercel.app/gallery');
-                            } else {
-                                window.open('https://farcaster-mini-app-seven.vercel.app/gallery', '_blank');
-                            }
-                            break;
-                        case 'share':
-                            await shareToFarcaster();
-                            break;
                     }
-                } else {
-                    // Fallback for non-Farcaster environment
-                    alert(`${action} action - Please open in Farcaster for full functionality`);
-                }
-            } catch (error) {
-                console.error('Action failed:', error);
-                preview.innerHTML = '❌ Action failed';
-                preview.style.background = 'linear-gradient(45deg, #FF6B6B, #FF8E53)';
+                })
+                .then((context) => {
+                    if (context && context.user) {
+                        console.log('User context:', context);
+                        updateUserInterface(context.user);
+                    }
+                })
+                .catch((error) => {
+                    console.error('SDK ready failed:', error);
+                    updateReadyState(false);
+                });
+        } else {
+            console.log('SDK not found, app running in standalone mode');
+            updateReadyState(false);
+        }
+    }
+    
+    function updateReadyState(ready) {
+        const indicator = document.querySelector('.status-indicator');
+        const badge = document.querySelector('.miniapp-badge');
+        
+        if (ready) {
+            indicator.style.background = '#4ECDC4';
+            badge.innerHTML = '<div class="status-indicator"></div>Ready in Farcaster';
+        } else {
+            indicator.style.background = '#FF6B6B';
+            badge.innerHTML = '<div class="status-indicator"></div>Standalone Mode';
+        }
+    }
+    
+    // Start initialization when page loads
+    window.addEventListener('load', () => {
+        console.log('Page loaded, initializing SDK...');
+        setTimeout(initializeSDK, 100); // Small delay to ensure SDK is loaded
+    });
+    
+    function updateUserInterface(user) {
+        console.log('Customizing for user:', user.displayName || user.username);
+    }
+    
+    async function handleAction(action) {
+        console.log('Action:', action);
+        
+        const preview = document.querySelector('.nft-preview');
+        const originalContent = preview.innerHTML;
+        
+        const actionMessages = {
+            'connect': '🔗 Connecting...',
+            'mint': '🎨 Minting...',
+            'gallery': '🖼️ Loading...',
+            'share': '📤 Sharing...'
+        };
+        
+        // Visual feedback
+        preview.innerHTML = actionMessages[action] || '⚡ Processing...';
+        preview.style.background = 'linear-gradient(45deg, #4ECDC4, #45B7D1)';
+        
+        try {
+            switch (action) {
+                case 'connect':
+                    if (isSDKReady && farcasterSDK.wallet) {
+                        const wallet = await farcasterSDK.wallet();
+                        console.log('Wallet connected:', wallet);
+                    } else {
+                        console.log('Wallet connection - SDK not ready or not available');
+                    }
+                    break;
+                case 'mint':
+                    await simulateMint();
+                    break;
+                case 'gallery':
+                    if (isSDKReady && farcasterSDK.actions && farcasterSDK.actions.openUrl) {
+                        await farcasterSDK.actions.openUrl(window.location.origin + '/gallery');
+                    } else {
+                        window.open('/gallery', '_blank');
+                    }
+                    break;
+                case 'share':
+                    await shareToFarcaster();
+                    break;
             }
-            
-            // Restore original state
+        } catch (error) {
+            console.error('Action failed:', error);
+            preview.innerHTML = '❌ Action failed';
+            preview.style.background = 'linear-gradient(45deg, #FF6B6B, #FF8E53)';
+        }
+        
+        // Restore original state
+        setTimeout(() => {
+            preview.innerHTML = originalContent;
+            preview.style.background = 'linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4)';
+        }, 2000);
+    }
+    
+    async function simulateMint() {
+        return new Promise((resolve) => {
             setTimeout(() => {
-                preview.innerHTML = originalContent;
-                preview.style.background = 'linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4)';
-            }, 2000);
-        }
+                const preview = document.querySelector('.nft-preview');
+                preview.innerHTML = '✅ Minted!';
+                preview.style.background = 'linear-gradient(45deg, #4CAF50, #81C784)';
+                
+                // Update stats
+                const mintedStat = document.querySelector('.stat-number');
+                mintedStat.textContent = (parseInt(mintedStat.textContent.replace(',', '')) + 1).toLocaleString();
+                
+                resolve();
+            }, 1500);
+        });
+    }
+    
+    async function shareToFarcaster() {
+        const text = "Just minted an exclusive NFT from FarCast! 🎨✨\n\nMint yours directly from Farcaster 🚀\n\n#NFT #Farcaster #Web3";
         
-        async function simulateMint() {
-            // Simulate minting process
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    const preview = document.querySelector('.nft-preview');
-                    preview.innerHTML = '✅ Minted!';
-                    preview.style.background = 'linear-gradient(45deg, #4CAF50, #81C784)';
-                    
-                    // Update stats
-                    const mintedStat = document.querySelector('.stat-number');
-                    mintedStat.textContent = (parseInt(mintedStat.textContent.replace(',', '')) + 1).toLocaleString();
-                    
-                    resolve();
-                }, 1500);
-            });
-        }
-        
-        async function shareToFarcaster() {
-            const text = "Just minted an exclusive NFT from FarCast! 🎨✨\n\nMint yours directly from Farcaster 🚀\n\n#NFT #Farcaster #Web3";
-            
-            if (farcasterSDK && farcasterSDK.actions && farcasterSDK.actions.openUrl) {
-                try {
-                    const shareUrl = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(window.location.href)}`;
-                    await farcasterSDK.actions.openUrl(shareUrl);
-                } catch (error) {
-                    console.error('Share failed:', error);
-                    // Fallback
-                    const shareUrl = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}`;
-                    window.open(shareUrl, '_blank');
-                }
-            } else {
+        if (isSDKReady && farcasterSDK.actions && farcasterSDK.actions.openUrl) {
+            try {
+                const shareUrl = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(window.location.href)}`;
+                await farcasterSDK.actions.openUrl(shareUrl);
+            } catch (error) {
+                console.error('Share failed:', error);
                 const shareUrl = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}`;
                 window.open(shareUrl, '_blank');
             }
+        } else {
+            const shareUrl = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}`;
+            window.open(shareUrl, '_blank');
         }
-        
-        function launchMiniApp() {
-            if (isInFarcaster() && isSDKReady) {
-                // Already in mini app, show full interface
-                alert('You are in the Mini App! Full functionality available.');
-            } else {
-                // Redirect to Farcaster
-                const farcasterUrl = `https://warpcast.com/~/frame/${encodeURIComponent(window.location.href)}`;
-                window.open(farcasterUrl, '_blank');
-            }
-        }
-        
-        // Auto-update stats
-        setInterval(() => {
-            const stats = document.querySelectorAll('.stat-number');
-            const currentMinted = parseInt(stats[0].textContent.replace(',', ''));
-            const remaining = parseInt(stats[2].textContent.replace(',', ''));
-            
-            if (Math.random() > 0.7 && remaining > 0) {
-                stats[0].textContent = (currentMinted + 1).toLocaleString();
-                stats[2].textContent = (remaining - 1).toLocaleString();
-            }
-        }, 5000);
-    </script>
+    }
     
-    <!-- Load Farcaster SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@farcaster/frame-sdk" async></script>
-    <script>
-        // Alternative SDK loading
-        if (!window.sdk) {
-            const script = document.createElement('script');
-            script.src = 'https://connect.farcaster.xyz/js/sdk.js';
-            script.async = true;
-            document.head.appendChild(script);
+    function launchMiniApp() {
+        if (isInFarcaster() && isSDKReady) {
+            alert('You are in the Mini App! Full functionality available.');
+        } else {
+            const farcasterUrl = `https://warpcast.com/~/frame/${encodeURIComponent(window.location.href)}`;
+            window.open(farcasterUrl, '_blank');
         }
-    </script>
-</body>
+    }
+    
+    // Auto-update stats
+    setInterval(() => {
+        const stats = document.querySelectorAll('.stat-number');
+        const currentMinted = parseInt(stats[0].textContent.replace(',', ''));
+        const remaining = parseInt(stats[2].textContent.replace(',', ''));
+        
+        if (Math.random() > 0.7 && remaining > 0) {
+            stats[0].textContent = (currentMinted + 1).toLocaleString();
+            stats[2].textContent = (remaining - 1).toLocaleString();
+        }
+    }, 5000);
+</script>
+
+<!-- Load Farcaster SDK -->
+<script src="https://sdk.farcaster.xyz/v0.13.1/farcaster.js" async onload="initializeSDK()"></script>
+</body
 </html>
