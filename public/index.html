@@ -327,38 +327,33 @@
                         method: 'eth_requestAccounts'
                     });
                     
+                    if (!accounts || accounts.length === 0) {
+                        showStatus('No accounts found. Please unlock your wallet.', 'error');
+                        return;
+                    }
+                    
                     userAccount = accounts[0];
+                    
+                    // Validate address format
+                    if (!userAccount || !userAccount.match(/^0x[a-fA-F0-9]{40}$/)) {
+                        showStatus('Invalid wallet address format', 'error');
+                        return;
+                    }
                     
                     // Initialize Web3
                     web3 = new Web3(window.ethereum);
                     
-                    // Initialize contract
-                    contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+                    // Verify Web3 is working
+                    try {
+                        await web3.eth.getBlockNumber();
+                    } catch (web3Error) {
+                        showStatus('Failed to connect to blockchain network', 'error');
+                        return;
+                    }
                     
-                    // Update UI
+                    // Update UI first
                     document.getElementById('walletAddress').textContent = 
-                        userAccount.slice(0, 6) + '...' + userAccount.slice(-4);
-                    document.getElementById('walletInfo').style.display = 'block';
-                    document.getElementById('connectBtn').style.display = 'none';
-                    document.getElementById('mintBtn').disabled = false;
-                    
-                    // Check network
-                    const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-                    updateNetworkInfo(chainId);
-                    
-                    showStatus('Wallet connected successfully!', 'success');
-                    
-                    // Update gas estimate
-                    updateGasEstimate();
-                    
-                } else {
-                    showStatus('Please install MetaMask or another Web3 wallet', 'error');
-                }
-            } catch (error) {
-                console.error('Error connecting wallet:', error);
-                showStatus('Failed to connect wallet: ' + error.message, 'error');
-            }
-        }
+                        userAccount.slice(0, 6) + '...' + userAcc
         
         // Update network information
         function updateNetworkInfo(chainId) {
