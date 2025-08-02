@@ -353,7 +353,47 @@
                     
                     // Update UI first
                     document.getElementById('walletAddress').textContent = 
-                        userAccount.slice(0, 6) + '...' + userAcc
+                        userAccount.slice(0, 6) + '...' + userAccount.slice(-4);
+                    document.getElementById('walletInfo').style.display = 'block';
+                    document.getElementById('connectBtn').style.display = 'none';
+                    document.getElementById('mintBtn').disabled = false;
+                    
+                    // Check network
+                    const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+                    updateNetworkInfo(chainId);
+                    
+                    showStatus('Wallet connected successfully!', 'success');
+                    
+                    // Only initialize contract if we have a valid address
+                    if (CONTRACT_ADDRESS && CONTRACT_ADDRESS !== '0x...') {
+                        try {
+                            contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+                            // Update gas estimate
+                            updateGasEstimate();
+                        } catch (contractError) {
+                            console.warn('Contract initialization failed:', contractError);
+                            showStatus('Wallet connected, but contract not configured', 'success');
+                        }
+                    } else {
+                        showStatus('Wallet connected! (Demo mode - contract not configured)', 'success');
+                    }
+                    
+                } else {
+                    showStatus('Please install MetaMask or another Web3 wallet', 'error');
+                }
+            } catch (error) {
+                console.error('Error connecting wallet:', error);
+                
+                // Handle specific error types
+                if (error.code === 4001) {
+                    showStatus('Connection rejected by user', 'error');
+                } else if (error.code === -32002) {
+                    showStatus('Connection request already pending. Check your wallet.', 'error');
+                } else {
+                    showStatus('Failed to connect wallet: ' + (error.message || 'Unknown error'), 'error');
+                }
+            }
+        }
         
         // Update network information
         function updateNetworkInfo(chainId) {
