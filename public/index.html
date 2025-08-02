@@ -340,9 +340,15 @@
 // Farcaster SDK Integration
 let farcasterSDK = null;
 let isSDKReady = false;
+let sdkInitializationAttempted = false; // Flag to ensure initialization is only attempted once
 
 // Initialize SDK when it's available
 function initializeSDK() {
+    if (sdkInitializationAttempted) {
+        return; // Already tried to initialize
+    }
+    sdkInitializationAttempted = true;
+
     if (typeof window !== 'undefined' && window.sdk) {
         farcasterSDK = window.sdk;
         console.log('Farcaster SDK found, calling ready...');
@@ -367,8 +373,12 @@ function initializeSDK() {
                 updateReadyState(false);
             });
     } else {
-        // Retry if SDK not loaded yet
-        setTimeout(initializeSDK, 100);
+        // If SDK is not immediately available, retry after a short delay.
+        // This handles cases where the script might have loaded but not fully executed,
+        // or if the onload event fires before window.sdk is populated.
+        console.log('Farcaster SDK not yet available, retrying initialization...');
+        sdkInitializationAttempted = false; // Allow retry
+        setTimeout(initializeSDK, 50); 
     }
 }
 
@@ -510,18 +520,10 @@ setInterval(() => {
     }
 }, 5000);
 
-// Initialize when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeSDK);
-} else {
-    initializeSDK();
-}
-
-// Also try when window loads
-window.addEventListener('load', initializeSDK);
+// Load Farcaster SDK and initialize
+// The onload event ensures initializeSDK is called after the script is loaded and executed.
+// A small setTimeout inside initializeSDK handles cases where window.sdk might not be immediately available.
 </script>
-
-<!-- Load Farcaster SDK -->
-<script src="https://sdk.farcaster.xyz/v0.13.1/farcaster.js" async></script>
-</body
+<script src="https://sdk.farcaster.xyz/v0.13.1/farcaster.js" async onload="initializeSDK()"></script>
+</body>
 </html>
