@@ -3,74 +3,519 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Farcaster Mini App</title>
-    <!-- Tailwind CSS for easy styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Inter Font for modern typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Farcaster NFT Mint</title>
+    
+    <!-- Farcaster Frame Meta Tags -->
+    <meta property="fc:frame" content="vNext" />
+    <meta property="fc:frame:image" content="https://via.placeholder.com/800x600/6366f1/ffffff?text=Mint+Your+Exclusive+NFT+%F0%9F%8E%A8" />
+    <meta property="fc:frame:button:1" content="🔗 Open App" />
+    <meta property="fc:frame:button:1:action" content="link" />
+    <meta property="fc:frame:button:1:target" content="https://your-domain.com" />
+    <meta property="fc:frame:button:2" content="🎨 Quick Mint" />
+    <meta property="fc:frame:post_url" content="https://your-domain.com/frame-handler" />
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Farcaster NFT Mint" />
+    <meta property="og:description" content="Mint your exclusive NFT directly from Farcaster" />
+    <meta property="og:image" content="https://via.placeholder.com/800x600/6366f1/ffffff?text=Mint+Your+NFT" />
+    
     <style>
-        /* Apply Inter font globally */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .nft-preview {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            border-radius: 15px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .wallet-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .wallet-address {
+            font-family: monospace;
+            font-size: 0.9rem;
+            word-break: break-all;
+            margin: 5px 0;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border: none;
+            border-radius: 50px;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            min-width: 160px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .status.success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+        }
+        
+        .status.error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.5);
+        }
+        
+        .status.loading {
+            background: rgba(255, 193, 7, 0.2);
+            border: 1px solid rgba(255, 193, 7, 0.5);
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .mint-details {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .farcaster-info {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 600px) {
+            .card {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .nft-preview {
+                width: 150px;
+                height: 150px;
+            }
         }
     </style>
-
-    <!-- Farcaster Frame Meta Tags -->
-    <!-- These tags tell Farcaster clients how to render your app in the feed -->
-    <meta property="og:title" content="My Farcaster Mini App">
-    <!-- Initial image displayed in the Farcaster feed - Using a more reliable image host with smaller dimensions for faster loading -->
-    <meta property="og:image" content="https://picsum.photos/300/200?random=1">
-    <!-- Specifies the Farcaster Frame version -->
-    <meta property="fc:frame" content="vNext">
-    <!-- The image to display within the frame (can be different from og:image) - Using a more reliable image host with smaller dimensions for faster loading -->
-    <meta property="fc:frame:image" content="https://picsum.photos/300/200?random=1">
-    <!-- IMPORTANT: This URL will now point to your Vercel serverless function!
-         Replace 'YOUR_VERCEL_APP_DOMAIN' with your actual Vercel domain. -->
-    <meta property="fc:frame:post_url" content="https://YOUR_VERCEL_APP_DOMAIN/api/frame">
-    <!-- Define the first button for the frame -->
-    <meta property="fc:frame:button:1" content="Click for a new message!">
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
-    <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">
-        <h1 class="text-3xl font-bold text-gray-800 mb-4">Farcaster Mini App Example</h1>
-        <!-- The image and message below are for direct browser viewing only.
-             Farcaster clients will use the meta tags returned by the backend. -->
-        <img id="frameImage" src="https://picsum.photos/300/200?random=1" alt="Farcaster Frame Image" class="w-full rounded-lg mb-6">
-        <p id="messageDisplay" class="text-xl text-gray-700 mb-6">Hello Farcaster! This is a simple mini-app.</p>
-        <button id="actionButton" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">
-            Click Me!
-        </button>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="logo">🎨 FarCast NFT</div>
+            <div class="subtitle">Mint exclusive NFTs directly from Farcaster</div>
+            
+            <div class="nft-preview" id="nftPreview">
+                Your NFT Preview
+            </div>
+            
+            <div class="wallet-info" id="walletInfo">
+                <div><strong>Connected Wallet:</strong></div>
+                <div class="wallet-address" id="walletAddress"></div>
+                <div><strong>Network:</strong> <span id="networkName">Ethereum</span></div>
+            </div>
+            
+            <div class="mint-details">
+                <div class="detail-row">
+                    <span><strong>Collection:</strong></span>
+                    <span>FarCast Exclusive</span>
+                </div>
+                <div class="detail-row">
+                    <span><strong>Price:</strong></span>
+                    <span>0.01 ETH</span>
+                </div>
+                <div class="detail-row">
+                    <span><strong>Supply:</strong></span>
+                    <span>1000 / 10000</span>
+                </div>
+                <div class="detail-row">
+                    <span><strong>Gas Fee:</strong></span>
+                    <span id="gasEstimate">~$5-10</span>
+                </div>
+            </div>
+            
+            <button class="btn" id="connectBtn" onclick="connectWallet()">
+                Connect Wallet
+            </button>
+            
+            <button class="btn btn-secondary" id="mintBtn" onclick="mintNFT()" disabled>
+                Mint NFT
+            </button>
+            
+            <div class="status" id="statusDiv">
+                <span id="statusText"></span>
+            </div>
+            
+            <div class="farcaster-info">
+                💜 Built for Farcaster • Share your mint on /nft
+            </div>
+        </div>
     </div>
 
     <script>
-        // This client-side JavaScript is for direct browser viewing only.
-        // Farcaster clients will interact with the backend server defined in fc:frame:post_url.
-        document.addEventListener('DOMContentLoaded', () => {
-            const messageDisplay = document.getElementById('messageDisplay');
-            const actionButton = document.getElementById('actionButton');
-            const frameImage = document.getElementById('frameImage');
-
-            let messageState = 0;
-            const messages = [
-                "Hello Farcaster! This is a simple mini-app.",
-                "Welcome to my interactive Farcaster experience!",
-                "You just clicked the button! Awesome!",
-                "Keep exploring Farcaster frames!"
-            ];
-            const images = [
-                "https://picsum.photos/300/200?random=1",
-                "https://picsum.photos/300/200?random=2",
-                "https://picsum.photos/300/200?random=3",
-                "https://picsum.photos/300/200?random=4"
-            ];
-
-            actionButton.addEventListener('click', () => {
-                messageState = (messageState + 1) % messages.length;
-                messageDisplay.textContent = messages[messageState];
-                frameImage.src = images[messageState];
-                console.log('Button clicked in browser! Message and image changed.');
-            });
+        let web3;
+        let userAccount;
+        let contract;
+        
+        // Contract configuration (replace with your actual contract details)
+        const CONTRACT_ADDRESS = '0x...'; // Your NFT contract address
+        const CONTRACT_ABI = [
+            // Simplified ABI for minting function
+            {
+                "inputs": [{"internalType": "address", "name": "to", "type": "address"}],
+                "name": "mint",
+                "outputs": [],
+                "stateMutability": "payable",
+                "type": "function"
+            }
+        ];
+        
+        const MINT_PRICE = '0.01'; // Price in ETH
+        
+        // Check if running in Farcaster
+        function isFarcaster() {
+            return window.parent !== window || 
+                   navigator.userAgent.includes('farcaster') ||
+                   document.referrer.includes('farcaster');
+        }
+        
+        // Initialize Farcaster Frame
+        function initFarcasterFrame() {
+            if (isFarcaster()) {
+                // Listen for Farcaster frame messages
+                window.addEventListener('message', (event) => {
+                    if (event.data.type === 'fc:frame:button:clicked') {
+                        handleFrameButtonClick(event.data.buttonIndex);
+                    }
+                });
+                
+                // Send ready message to parent frame
+                window.parent.postMessage({
+                    type: 'fc:frame:ready'
+                }, '*');
+            }
+        }
+        
+        // Handle Farcaster frame button clicks
+        function handleFrameButtonClick(buttonIndex) {
+            if (buttonIndex === 1) {
+                connectWallet();
+            } else if (buttonIndex === 2) {
+                mintNFT();
+            }
+        }
+        
+        // Connect wallet function
+        async function connectWallet() {
+            showStatus('Connecting wallet...', 'loading');
+            
+            try {
+                if (typeof window.ethereum !== 'undefined') {
+                    // Request account access
+                    const accounts = await window.ethereum.request({
+                        method: 'eth_requestAccounts'
+                    });
+                    
+                    userAccount = accounts[0];
+                    
+                    // Initialize Web3
+                    web3 = new Web3(window.ethereum);
+                    
+                    // Initialize contract
+                    contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+                    
+                    // Update UI
+                    document.getElementById('walletAddress').textContent = 
+                        userAccount.slice(0, 6) + '...' + userAccount.slice(-4);
+                    document.getElementById('walletInfo').style.display = 'block';
+                    document.getElementById('connectBtn').style.display = 'none';
+                    document.getElementById('mintBtn').disabled = false;
+                    
+                    // Check network
+                    const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+                    updateNetworkInfo(chainId);
+                    
+                    showStatus('Wallet connected successfully!', 'success');
+                    
+                    // Update gas estimate
+                    updateGasEstimate();
+                    
+                } else {
+                    showStatus('Please install MetaMask or another Web3 wallet', 'error');
+                }
+            } catch (error) {
+                console.error('Error connecting wallet:', error);
+                showStatus('Failed to connect wallet: ' + error.message, 'error');
+            }
+        }
+        
+        // Update network information
+        function updateNetworkInfo(chainId) {
+            const networks = {
+                '0x1': 'Ethereum Mainnet',
+                '0x89': 'Polygon',
+                '0xa': 'Optimism',
+                '0x2105': 'Base'
+            };
+            
+            const networkName = networks[chainId] || 'Unknown Network';
+            document.getElementById('networkName').textContent = networkName;
+        }
+        
+        // Update gas estimate
+        async function updateGasEstimate() {
+            if (!web3 || !contract || !userAccount) return;
+            
+            try {
+                const gasPrice = await web3.eth.getGasPrice();
+                const gasLimit = await contract.methods.mint(userAccount).estimateGas({
+                    from: userAccount,
+                    value: web3.utils.toWei(MINT_PRICE, 'ether')
+                });
+                
+                const gasCost = web3.utils.fromWei((BigInt(gasPrice) * BigInt(gasLimit)).toString(), 'ether');
+                const gasCostUSD = (parseFloat(gasCost) * 2000).toFixed(2); // Assuming $2000 ETH
+                
+                document.getElementById('gasEstimate').textContent = `~$${gasCostUSD}`;
+            } catch (error) {
+                console.error('Error estimating gas:', error);
+            }
+        }
+        
+        // Mint NFT function
+        async function mintNFT() {
+            if (!userAccount || !contract) {
+                showStatus('Please connect your wallet first', 'error');
+                return;
+            }
+            
+            showStatus('Preparing to mint NFT...', 'loading');
+            document.getElementById('mintBtn').disabled = true;
+            
+            try {
+                // Check balance
+                const balance = await web3.eth.getBalance(userAccount);
+                const balanceETH = web3.utils.fromWei(balance, 'ether');
+                
+                if (parseFloat(balanceETH) < parseFloat(MINT_PRICE)) {
+                    showStatus('Insufficient balance for minting', 'error');
+                    document.getElementById('mintBtn').disabled = false;
+                    return;
+                }
+                
+                showStatus('Minting NFT... Please confirm transaction', 'loading');
+                
+                // Send mint transaction
+                const transaction = await contract.methods.mint(userAccount).send({
+                    from: userAccount,
+                    value: web3.utils.toWei(MINT_PRICE, 'ether')
+                });
+                
+                showStatus('NFT minted successfully! 🎉', 'success');
+                
+                // Update NFT preview with success animation
+                const preview = document.getElementById('nftPreview');
+                preview.innerHTML = '✅ Minted!';
+                preview.style.background = 'linear-gradient(45deg, #4caf50, #81c784)';
+                
+                // Show transaction hash
+                setTimeout(() => {
+                    showStatus(`Transaction: ${transaction.transactionHash.slice(0, 10)}...`, 'success');
+                }, 2000);
+                
+                // Share on Farcaster
+                setTimeout(() => {
+                    shareFarcasterCast(transaction.transactionHash);
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Error minting NFT:', error);
+                if (error.code === 4001) {
+                    showStatus('Transaction cancelled by user', 'error');
+                } else {
+                    showStatus('Minting failed: ' + error.message, 'error');
+                }
+            } finally {
+                document.getElementById('mintBtn').disabled = false;
+            }
+        }
+        
+        // Share on Farcaster
+        function shareFarcasterCast(txHash) {
+            const text = `Just minted an exclusive NFT from FarCast! 🎨✨\n\nTx: ${txHash}\n\n#NFT #Farcaster #Web3`;
+            const shareUrl = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}`;
+            
+            // Open in new tab if not in frame
+            if (!isFarcaster()) {
+                window.open(shareUrl, '_blank');
+            } else {
+                // Send message to parent frame for sharing
+                window.parent.postMessage({
+                    type: 'fc:frame:share',
+                    text: text
+                }, '*');
+            }
+        }
+        
+        // Show status message
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('statusDiv');
+            const statusText = document.getElementById('statusText');
+            
+            statusDiv.className = `status ${type}`;
+            statusDiv.style.display = 'block';
+            
+            if (type === 'loading') {
+                statusText.innerHTML = `<div class="spinner"></div>${message}`;
+            } else {
+                statusText.textContent = message;
+            }
+            
+            // Auto-hide success/error messages
+            if (type !== 'loading') {
+                setTimeout(() => {
+                    statusDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        // Initialize app
+        window.addEventListener('load', () => {
+            initFarcasterFrame();
+            
+            // Listen for account changes
+            if (window.ethereum) {
+                window.ethereum.on('accountsChanged', (accounts) => {
+                    if (accounts.length === 0) {
+                        // User disconnected
+                        location.reload();
+                    } else {
+                        userAccount = accounts[0];
+                        document.getElementById('walletAddress').textContent = 
+                            userAccount.slice(0, 6) + '...' + userAccount.slice(-4);
+                    }
+                });
+                
+                window.ethereum.on('chainChanged', (chainId) => {
+                    updateNetworkInfo(chainId);
+                    updateGasEstimate();
+                });
+            }
         });
     </script>
+    
+    <!-- Web3.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.0/web3.min.js"></script>
 </body>
 </html>
